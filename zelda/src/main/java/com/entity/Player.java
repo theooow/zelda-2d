@@ -46,6 +46,8 @@ public class Player extends Entity{
 
         if(keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed){
 
+            if(keyHandler.shiftPressed) speed = 6;
+            else                        speed = 4;
             if(keyHandler.upPressed){
                 direction = "up";
                 y -= speed;
