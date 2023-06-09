@@ -2,6 +2,8 @@ package com.zelda;
 
 import javax.swing.JPanel;
 
+import com.entity.Player;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -23,11 +25,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
-
-    //Player settings
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4;
+    Player player = new Player(this, keyHandler);
 
     public GamePanel() {
         super();
@@ -70,23 +68,26 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        if(keyHandler.upPressed){
-            playerY -= playerSpeed;
-        } else if(keyHandler.downPressed){
-            playerY += playerSpeed;
-        } else if(keyHandler.leftPressed){
-            playerX -= playerSpeed;
-        } else if(keyHandler.rightPressed){
-            playerX += playerSpeed;
-        }
+        player.update();
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        g2.setColor(Color.WHITE);
-        g2.fillRect(playerX, playerY, tileSize, tileSize);
+        player.draw(g2);
         g2.dispose();
     }
 
+    // Getters
+    public int getTileSize() {return tileSize;}
+    public int getScreenWidth() {return screenWidth;}
+    public int getScreenHeight() {return screenHeight;}
+    public int getMaxScreencol() {return maxScreencol;}
+    public int getMaxScreenrow() {return maxScreenrow;}
+    public int getScale() {return scale;}
+    public int getOriginalTileSize() {return originalTileSize;}
+    public int getFPS() {return FPS;}
+    public KeyHandler getKeyHandler() {return keyHandler;}
+    public Player getPlayer() {return player;}
+    public Thread getGameThread() {return gameThread;}
 }
