@@ -2,7 +2,8 @@ package com.zelda;
 
 import javax.swing.JPanel;
 
-import com.entity.Player;
+import com.entity.player.Player;
+import com.entity.tiles.TileManager;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,6 +26,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
+    TileManager tileManager = new TileManager(this);
     Player player = new Player(this, keyHandler);
 
     public GamePanel() {
@@ -74,6 +76,7 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+        tileManager.draw(g2);
         player.draw(g2);
         g2.dispose();
     }

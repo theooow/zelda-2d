@@ -1,8 +1,9 @@
-package com.entity;
+package com.entity.player;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import com.entity.Entity;
 import com.zelda.GamePanel;
 import com.zelda.KeyHandler;
 
