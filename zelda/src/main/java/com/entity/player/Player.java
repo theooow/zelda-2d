@@ -12,16 +12,20 @@ public class Player extends Entity{
     GamePanel gamePanel;
     KeyHandler keyHandler;
 
+    final int screenX, screenY;
+
     public Player(GamePanel _gamePanel, KeyHandler _keyHandler){
         gamePanel = _gamePanel;
         keyHandler = _keyHandler;
+        screenX = gamePanel.getScreenWidth()/2 - gamePanel.getTileSize()/2;
+        screenY = gamePanel.getScreenHeight()/2 - gamePanel.getTileSize()/2;
         setDefaultValues();
         loadSprite();
     }
 
     private void setDefaultValues(){
-        x = 100;
-        y = 100;
+        worldX = gamePanel.getTileSize()*25;
+        worldY = gamePanel.getTileSize()*25;
         speed = 4;
         direction = "down";
     }
@@ -51,16 +55,16 @@ public class Player extends Entity{
             else                        speed = 4;
             if(keyHandler.upPressed){
                 direction = "up";
-                y -= speed;
+                worldY -= speed;
             } else if(keyHandler.downPressed){
                 direction = "down";
-                y += speed;
+                worldY += speed;
             } else if(keyHandler.leftPressed){
                 direction = "left";
-                x -= speed;
+                worldX -= speed;
             } else if(keyHandler.rightPressed){
                 direction = "right";
-                x += speed;
+                worldX += speed;
             }
             spriteCounter++;
             if(spriteCounter > 10){
@@ -112,6 +116,14 @@ public class Player extends Entity{
                     sprite = spriteRight3;
                 break;
         }
-        g2.drawImage(sprite, x, y, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
+        g2.drawImage(sprite, screenX, screenY, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
     }
+
+    // Getters
+    public int getWorldX(){ return worldX; }
+    public int getWorldY(){ return worldY; }
+    public int getScreenX(){ return screenX; }
+    public int getScreenY(){ return screenY; }
+    public int getSpeed(){ return speed; }
+    public String getDirection(){ return direction; }
 }

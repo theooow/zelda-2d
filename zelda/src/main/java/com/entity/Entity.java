@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 
 public class Entity {
     
-    protected int x, y;
+    protected int worldX, worldY;
     protected int speed;
 
     protected BufferedImage spriteUp1, spriteUp2, spriteUp3, spriteRight1, spriteRight2, spriteRight3, spriteDown1, spriteDown2, spriteDown3, spriteLeft1, spriteLeft2, spriteLeft3;
@@ -29,8 +29,8 @@ public class Entity {
         return spriteSheet;
     }
 
-    public int getX() {return x;}
-    public int getY() {return y;}
+    public int getWorldX() {return worldX;}
+    public int getWorldY() {return worldY;}
     public int getSpeed() {return speed;}
     public BufferedImage getSpriteUp1() {return spriteUp1;}
     public BufferedImage getSpriteUp2() {return spriteUp2;}

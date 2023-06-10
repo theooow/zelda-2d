@@ -1,6 +1,8 @@
 package com.entity.tiles;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,8 +24,8 @@ public class TileManager {
     public TileManager(GamePanel _gamePanel){
         gamePanel = _gamePanel;
         tile = new Tile[1440];
-        mapTileNum = new int[gamePanel.getMaxScreencol()][gamePanel.getMaxScreenrow()];
-        loadMap("/com/entity/maps/map-01.txt");
+        mapTileNum = new int[gamePanel.getMaxWorldCol()][gamePanel.getMaxWorldRow()];
+        loadMap("/com/entity/maps/world-01.txt");
         loadTiles();
     }
 
@@ -55,16 +57,16 @@ public class TileManager {
             int col = 0;
             int row = 0;
 
-            while(col < gamePanel.getMaxScreencol() && row < gamePanel.getMaxScreenrow()){
+            while(col < gamePanel.getMaxWorldCol() && row < gamePanel.getMaxWorldRow()){
                 String line = br.readLine();
                 
-                while(col < gamePanel.getMaxScreencol()){
+                while(col < gamePanel.getMaxWorldCol()){
                     String[] tokens = line.split(" ");
                     int num = Integer.parseInt(tokens[col]);
                     mapTileNum[col][row] = num;
                     col++;
                 }
-                if(col == gamePanel.getMaxScreencol()){
+                if(col == gamePanel.getMaxWorldCol()){
                     col = 0;
                     row++;
                 }
@@ -86,13 +88,32 @@ public class TileManager {
     }
 
     public void draw(Graphics2D g2){
+        // Activer l'anticrénelage
+        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         int tileSize = gamePanel.getTileSize();
-        for(int i = 0; i < gamePanel.getHeight() / tileSize; i++){
-            for(int j = 0; j < gamePanel.getWidth() / tileSize; j++) {
-                int tileNum = mapTileNum[j][i];
-                if(tileNum >= 0){
-                    g2.drawImage(tile[tileNum].getImage(), j * tileSize, i * tileSize, tileSize, tileSize, null);
-                }
+
+        int worldCol = 0;
+        int worldRow = 0;
+
+        while(worldCol < gamePanel.getMaxWorldCol() && worldRow < gamePanel.getMaxWorldRow()){
+            int tileNum = mapTileNum[worldCol][worldRow];
+
+            int worldX = worldCol * tileSize;
+            int worldY = worldRow * tileSize;
+            int screenX = worldX - gamePanel.getPlayer().getWorldX() + gamePanel.getPlayer().getScreenX();
+            int screenY = worldY - gamePanel.getPlayer().getWorldY() + gamePanel.getPlayer().getScreenY();
+
+            if(worldX + tileSize > gamePanel.getPlayer().getWorldX() - gamePanel.getPlayer().getScreenX()
+            && worldX - tileSize < gamePanel.getPlayer().getWorldX() + gamePanel.getPlayer().getScreenX()
+            && worldY + tileSize > gamePanel.getPlayer().getWorldY() - gamePanel.getPlayer().getScreenY()
+            && worldY - tileSize < gamePanel.getPlayer().getWorldY() + gamePanel.getPlayer().getScreenY())
+                g2.drawImage(tile[tileNum].getImage(), screenX, screenY, tileSize, tileSize, null);
+            
+            worldCol++;
+
+            if(worldCol == gamePanel.getMaxWorldCol()){
+                worldCol = 0;
+                worldRow++; 
             }
         }
     }
