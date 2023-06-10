@@ -1,5 +1,6 @@
 package com.entity;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,9 @@ public class Entity {
     protected int spriteCounter = 0;
     protected int spriteNumber = 1;
 
+    protected Rectangle hitBox;
+    protected boolean collision = false;
+
     protected BufferedImage getSpriteSheet(){
         BufferedImage spriteSheet = null;
         try{
@@ -30,8 +34,15 @@ public class Entity {
     }
 
     public int getWorldX() {return worldX;}
+    public void setWorldX(int _worldX) {worldX = _worldX;}
+
     public int getWorldY() {return worldY;}
+    public void setWorldY(int _worldY) {worldY = _worldY;}
+
     public int getSpeed() {return speed;}
+    public Rectangle getHitBox() {return hitBox;}
+    public boolean getCollision() {return collision;}
+    public void setCollision(boolean _collision) {collision = _collision;}
     public BufferedImage getSpriteUp1() {return spriteUp1;}
     public BufferedImage getSpriteUp2() {return spriteUp2;}
     public BufferedImage getSpriteUp3() {return spriteUp3;}

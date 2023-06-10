@@ -1,8 +1,6 @@
 package com.entity.tiles;
 
-import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -47,6 +45,29 @@ public class TileManager {
                 counter++;
             }
         }
+        tile[40].setIsSolid(true);
+        tile[41].setIsSolid(true);
+        tile[42].setIsSolid(true);
+        tile[43].setIsSolid(true);
+
+        tile[22].setIsSolid(true);
+        tile[23].setIsSolid(true);
+        tile[24].setIsSolid(true);
+        tile[62].setIsSolid(true);
+        tile[63].setIsSolid(true);
+        tile[64].setIsSolid(true);
+        tile[102].setIsSolid(true);
+        tile[103].setIsSolid(true);
+        tile[104].setIsSolid(true);
+        tile[142].setIsSolid(true);
+        tile[143].setIsSolid(true);
+        tile[144].setIsSolid(true);
+        tile[182].setIsSolid(true);
+        tile[183].setIsSolid(true);
+        tile[184].setIsSolid(true);
+        tile[222].setIsSolid(true);
+        tile[222].setIsSolid(true);
+        tile[222].setIsSolid(true);
     }
 
     public void loadMap(String filePath){
@@ -116,5 +137,13 @@ public class TileManager {
                 worldRow++; 
             }
         }
+    }
+
+    public Tile[] getTile() {
+        return tile;
+    }
+
+    public int getMapTileNum(int col, int row) {
+        return mapTileNum[col][row];
     }
 }

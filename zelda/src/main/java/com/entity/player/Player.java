@@ -1,6 +1,7 @@
 package com.entity.player;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.entity.Entity;
@@ -19,6 +20,7 @@ public class Player extends Entity{
         keyHandler = _keyHandler;
         screenX = gamePanel.getScreenWidth()/2 - gamePanel.getTileSize()/2;
         screenY = gamePanel.getScreenHeight()/2 - gamePanel.getTileSize()/2;
+        hitBox = new Rectangle(8, 8, 32, 32);
         setDefaultValues();
         loadSprite();
     }
@@ -55,17 +57,36 @@ public class Player extends Entity{
             else                        speed = 4;
             if(keyHandler.upPressed){
                 direction = "up";
-                worldY -= speed;
             } else if(keyHandler.downPressed){
                 direction = "down";
-                worldY += speed;
             } else if(keyHandler.leftPressed){
                 direction = "left";
-                worldX -= speed;
             } else if(keyHandler.rightPressed){
                 direction = "right";
-                worldX += speed;
             }
+
+            // Collision check
+            collision = false;
+            gamePanel.collisionChecker.checkTile(this);
+
+            // Move player if no collision
+            if(!collision){
+                switch(direction){
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
+                }
+            }
+
             spriteCounter++;
             if(spriteCounter > 10){
                 spriteCounter = 1;
