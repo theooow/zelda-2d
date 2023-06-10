@@ -23,7 +23,7 @@ public class TileManager {
         gamePanel = _gamePanel;
         tile = new Tile[1440];
         mapTileNum = new int[gamePanel.getMaxWorldCol()][gamePanel.getMaxWorldRow()];
-        loadMap("/com/entity/maps/world-01.txt");
+        loadMap("/res/maps/world-01.txt");
         loadTiles();
     }
 
@@ -101,7 +101,7 @@ public class TileManager {
     protected BufferedImage getTileSheet(){
         BufferedImage tileSheet = null;
         try{
-            tileSheet = ImageIO.read(new File("./zelda/src/main/java/com/entity/tiles/Overworld.png"));
+            tileSheet = ImageIO.read(new File("./zelda/src/main/java/res/tiles/Overworld.png"));
         }catch(IOException e){
             e.printStackTrace();
         }

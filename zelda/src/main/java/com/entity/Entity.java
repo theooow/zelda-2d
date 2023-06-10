@@ -24,7 +24,7 @@ public class Entity {
     protected BufferedImage getSpriteSheet(){
         BufferedImage spriteSheet = null;
         try{
-            spriteSheet = ImageIO.read(new File("./zelda/src/main/java/com/entity/player/character.png"));
+            spriteSheet = ImageIO.read(new File("./zelda/src/main/java/res/players/character.png"));
         }catch(IOException e){
             //Afficher le chemin courant
             System.err.println("Current path: " + System.getProperty("user.dir"));
