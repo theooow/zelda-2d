@@ -20,7 +20,7 @@ public class Player extends Entity{
         keyHandler = _keyHandler;
         screenX = gamePanel.getScreenWidth()/2 - gamePanel.getTileSize()/2;
         screenY = gamePanel.getScreenHeight()/2 - gamePanel.getTileSize()/2;
-        hitBox = new Rectangle(8, 8, 32, 32);
+        hitBox = new Rectangle(16, 24, 16, 20);
         setDefaultValues();
         loadSprite();
     }

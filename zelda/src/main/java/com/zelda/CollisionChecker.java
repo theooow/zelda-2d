@@ -27,7 +27,7 @@ public class CollisionChecker {
                 entityTopRow = (entityTopWorldY - entity.getSpeed()) / gamePanel.getTileSize();
                 tileNum1 = gamePanel.getTileManager().getMapTileNum(entityLeftCol, entityTopRow);
                 tileNum2 = gamePanel.getTileManager().getMapTileNum(entityRightCol, entityTopRow);
-                if(gamePanel.getTileManager().getTile()[tileNum1].getIsSolid() || gamePanel.getTileManager().getTile()[tileNum2].getIsSolid()){
+                if(gamePanel.getTileManager().getTile().get(tileNum1).getIsSolid() || gamePanel.getTileManager().getTile().get(tileNum2).getIsSolid()){
                     entity.setCollision(true);
                 }
                 break;
@@ -35,7 +35,7 @@ public class CollisionChecker {
                 entityBottomRow = (entityBottomWorldY + entity.getSpeed()) / gamePanel.getTileSize();
                 tileNum1 = gamePanel.getTileManager().getMapTileNum(entityLeftCol, entityBottomRow);
                 tileNum2 = gamePanel.getTileManager().getMapTileNum(entityRightCol, entityBottomRow);
-                if(gamePanel.getTileManager().getTile()[tileNum1].getIsSolid() || gamePanel.getTileManager().getTile()[tileNum2].getIsSolid()){
+                if(gamePanel.getTileManager().getTile().get(tileNum1).getIsSolid() || gamePanel.getTileManager().getTile().get(tileNum2).getIsSolid()){
                     entity.setCollision(true);
                 }
                 break;
@@ -43,7 +43,7 @@ public class CollisionChecker {
                 entityLeftCol = (entityLeftWorldX - entity.getSpeed()) / gamePanel.getTileSize();
                 tileNum1 = gamePanel.getTileManager().getMapTileNum(entityLeftCol, entityTopRow);
                 tileNum2 = gamePanel.getTileManager().getMapTileNum(entityLeftCol, entityBottomRow);
-                if(gamePanel.getTileManager().getTile()[tileNum1].getIsSolid() || gamePanel.getTileManager().getTile()[tileNum2].getIsSolid()){
+                if(gamePanel.getTileManager().getTile().get(tileNum1).getIsSolid() || gamePanel.getTileManager().getTile().get(tileNum2).getIsSolid()){
                     entity.setCollision(true);
                 }
                 break;
@@ -51,7 +51,7 @@ public class CollisionChecker {
                 entityRightCol = (entityRightWorldX + entity.getSpeed()) / gamePanel.getTileSize();
                 tileNum1 = gamePanel.getTileManager().getMapTileNum(entityRightCol, entityBottomRow);
                 tileNum2 = gamePanel.getTileManager().getMapTileNum(entityRightCol, entityTopRow);
-                if(gamePanel.getTileManager().getTile()[tileNum1].getIsSolid() || gamePanel.getTileManager().getTile()[tileNum2].getIsSolid()){
+                if(gamePanel.getTileManager().getTile().get(tileNum1).getIsSolid() || gamePanel.getTileManager().getTile().get(tileNum2).getIsSolid()){
                     entity.setCollision(true);
                 }
                 break;

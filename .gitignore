@@ -1,4 +1,5 @@
 target/
+.vscode/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -7,7 +8,8 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-zelda/src/main/java/com/entity/tiles/Overworld.png.kra
+/zelda/src/main/java/res/
+/zelda/src/gfx/
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 

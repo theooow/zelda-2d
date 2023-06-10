@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -15,21 +16,26 @@ import com.zelda.GamePanel;
 public class TileManager {
     
     GamePanel gamePanel;
-    Tile[] tile;
+    ArrayList<Tile> tile;
     int mapTileNum[][];
 
 
     public TileManager(GamePanel _gamePanel){
         gamePanel = _gamePanel;
-        tile = new Tile[1440];
+        tile = new ArrayList<>();
         mapTileNum = new int[gamePanel.getMaxWorldCol()][gamePanel.getMaxWorldRow()];
         loadMap("/res/maps/world-01.txt");
-        loadTiles();
+
+        // between [0 - 175] // 176
+        loadTiles("./zelda/src/main/java/res/tiles/Overworld.png", false);
+
+        // between [176 - 1039] // 864
+        loadTiles("./zelda/src/main/java/res/tiles/Objects.png", true);
     }
 
-    private void loadTiles(){
-        BufferedImage tileSheet = getTileSheet();
-        int counter = 0;
+    private void loadTiles(String filePath, boolean isSolid){
+        BufferedImage tileSheet = getSheet(filePath);
+
         int tileSize = gamePanel.getOriginalTileSize();
         int numRows = tileSheet.getHeight() / tileSize;
         int numCols = tileSheet.getWidth() / tileSize;
@@ -41,8 +47,7 @@ public class TileManager {
                 int width = Math.min(tileSize, tileSheet.getWidth() - x);
                 int height = Math.min(tileSize, tileSheet.getHeight() - y);
 
-                tile[counter] = new Tile(tileSheet.getSubimage(x, y, width, height), false);
-                counter++;
+                tile.add(new Tile(tileSheet.getSubimage(x, y, width, height), isSolid));
             }
         }
 
@@ -78,10 +83,10 @@ public class TileManager {
         }
     }
 
-    protected BufferedImage getTileSheet(){
+    protected BufferedImage getSheet(String filePath){
         BufferedImage tileSheet = null;
         try{
-            tileSheet = ImageIO.read(new File("./zelda/src/main/java/res/tiles/Overworld.png"));
+            tileSheet = ImageIO.read(new File(filePath));
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -104,11 +109,14 @@ public class TileManager {
             int screenX = worldX - gamePanel.getPlayer().getWorldX() + gamePanel.getPlayer().getScreenX();
             int screenY = worldY - gamePanel.getPlayer().getWorldY() + gamePanel.getPlayer().getScreenY();
 
+            if(tileNum > 175)
+                g2.drawImage(tile.get(0).getImage(), screenX, screenY, tileSize, tileSize, null);
+
             if(worldX + tileSize > gamePanel.getPlayer().getWorldX() - gamePanel.getPlayer().getScreenX()
             && worldX - tileSize < gamePanel.getPlayer().getWorldX() + gamePanel.getPlayer().getScreenX()
             && worldY + tileSize > gamePanel.getPlayer().getWorldY() - gamePanel.getPlayer().getScreenY()
             && worldY - tileSize < gamePanel.getPlayer().getWorldY() + gamePanel.getPlayer().getScreenY())
-                g2.drawImage(tile[tileNum].getImage(), screenX, screenY, tileSize, tileSize, null);
+                g2.drawImage(tile.get(tileNum).getImage(), screenX, screenY, tileSize, tileSize, null);
             
             worldCol++;
 
@@ -119,7 +127,7 @@ public class TileManager {
         }
     }
 
-    public Tile[] getTile() {
+    public ArrayList<Tile> getTile() {
         return tile;
     }
 
