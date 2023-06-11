@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import com.map.LayerMap;
+import com.map.TiledMapParser;
 import com.zelda.GamePanel;
 
 public class TileManager {
@@ -18,19 +20,22 @@ public class TileManager {
     GamePanel gamePanel;
     ArrayList<Tile> tile;
     int mapTileNum[][];
+    TiledMapParser parser;
 
 
     public TileManager(GamePanel _gamePanel){
         gamePanel = _gamePanel;
         tile = new ArrayList<>();
         mapTileNum = new int[gamePanel.getMaxWorldCol()][gamePanel.getMaxWorldRow()];
-        loadMap("/res/maps/world-01.txt");
+        //loadMap("/res/maps/world-01.txt");
 
         // between [0 - 175] // 176
         loadTiles("./zelda/src/main/java/res/tiles/Overworld.png", false);
 
         // between [176 - 1039] // 864
         loadTiles("./zelda/src/main/java/res/tiles/Objects.png", true);
+
+        parser = new TiledMapParser("./zelda/src/main/java/res/maps/world01.json");
     }
 
     private void loadTiles(String filePath, boolean isSolid){
@@ -93,37 +98,59 @@ public class TileManager {
         return tileSheet;
     }
 
-    public void draw(Graphics2D g2){
-        // Activer l'anticrénelage
-        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        int tileSize = gamePanel.getTileSize();
+    public static int[][] convertToTwoDimensional(int[] array, int rows, int columns) {
+        if (array.length != rows * columns) {
+            throw new IllegalArgumentException("Le nombre d'éléments du tableau ne correspond pas à la taille bidimensionnelle spécifiée.");
+        }
+
+        int[][] twoDimensionalArray = new int[rows][columns];
+        int index = 0;
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                twoDimensionalArray[j][i] = array[index++];
+            }
+        }
+
+        return twoDimensionalArray;
+    }
+
+
+    public void draw(Graphics2D g2, LayerMap layer){
 
         int worldCol = 0;
         int worldRow = 0;
+        int tileSize = gamePanel.getTileSize();
+        int[][] map;
+        try {
+            map = convertToTwoDimensional(layer.getData(), layer.getHeight(), layer.getWidth());
 
-        while(worldCol < gamePanel.getMaxWorldCol() && worldRow < gamePanel.getMaxWorldRow()){
-            int tileNum = mapTileNum[worldCol][worldRow];
+            while(worldCol < gamePanel.getMaxWorldCol() && worldRow < gamePanel.getMaxWorldRow()){
+                int tileNum = map[worldCol][worldRow];
+                int worldX = worldCol * tileSize;
+                int worldY = worldRow * tileSize;
+                int screenX = worldX - gamePanel.getPlayer().getWorldX() + gamePanel.getPlayer().getScreenX();
+                int screenY = worldY - gamePanel.getPlayer().getWorldY() + gamePanel.getPlayer().getScreenY();
 
-            int worldX = worldCol * tileSize;
-            int worldY = worldRow * tileSize;
-            int screenX = worldX - gamePanel.getPlayer().getWorldX() + gamePanel.getPlayer().getScreenX();
-            int screenY = worldY - gamePanel.getPlayer().getWorldY() + gamePanel.getPlayer().getScreenY();
+                if(worldX + tileSize > gamePanel.getPlayer().getWorldX() - gamePanel.getPlayer().getScreenX()
+                && worldX - tileSize < gamePanel.getPlayer().getWorldX() + gamePanel.getPlayer().getScreenX()
+                && worldY + tileSize > gamePanel.getPlayer().getWorldY() - gamePanel.getPlayer().getScreenY()
+                && worldY - tileSize < gamePanel.getPlayer().getWorldY() + gamePanel.getPlayer().getScreenY()){
+                    if(tileNum > 0)
+                        g2.drawImage(tile.get(tileNum-1).getImage(), screenX, screenY, tileSize, tileSize, null);
+                    else 
+                        g2.drawImage(tile.get(56).getImage(), screenX, screenY, tileSize, tileSize, null);
+                }
+                worldCol++;
 
-            if(tileNum > 175)
-                g2.drawImage(tile.get(0).getImage(), screenX, screenY, tileSize, tileSize, null);
+                if(worldCol == gamePanel.getMaxWorldCol()){
+                    worldCol = 0;
+                    worldRow++; 
+                }
 
-            if(worldX + tileSize > gamePanel.getPlayer().getWorldX() - gamePanel.getPlayer().getScreenX()
-            && worldX - tileSize < gamePanel.getPlayer().getWorldX() + gamePanel.getPlayer().getScreenX()
-            && worldY + tileSize > gamePanel.getPlayer().getWorldY() - gamePanel.getPlayer().getScreenY()
-            && worldY - tileSize < gamePanel.getPlayer().getWorldY() + gamePanel.getPlayer().getScreenY())
-                g2.drawImage(tile.get(tileNum).getImage(), screenX, screenY, tileSize, tileSize, null);
-            
-            worldCol++;
-
-            if(worldCol == gamePanel.getMaxWorldCol()){
-                worldCol = 0;
-                worldRow++; 
             }
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
         }
     }
 

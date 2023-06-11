@@ -1,7 +1,7 @@
 package com.map;
 
 public class LayerMap {
-    private int[][] data;
+    private int[] data;
     private int height;
     private int width;
     private int x;
@@ -14,8 +14,8 @@ public class LayerMap {
     public LayerMap() {
     }
     // getters and setters
-    public int[][] getData() {return data;}
-    public void setData(int[][] data) {this.data = data;}
+    public int[] getData() {return data;}
+    public void setData(int[] data) {this.data = data;}
 
     public int getHeight() {return height;}
     public void setHeight(int height) {this.height = height;}

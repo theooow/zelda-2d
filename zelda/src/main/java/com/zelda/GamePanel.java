@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import com.entity.player.Player;
 import com.entity.tiles.TileManager;
+import com.map.TiledMapParser;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -33,6 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
     TileManager tileManager = new TileManager(this);
+    TiledMapParser parser;
 
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     Player player = new Player(this, keyHandler);
@@ -44,6 +46,7 @@ public class GamePanel extends JPanel implements Runnable {
         setDoubleBuffered(true);
         addKeyListener(keyHandler);
         setFocusable(true);
+        parser = new TiledMapParser("./zelda/src/main/java/res/maps/world01.json");
     }
 
     public void startGameThread() {
@@ -84,7 +87,9 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        tileManager.draw(g2);
+        for(int i = 0; i < parser.getLayers().size(); i++)
+            tileManager.draw(g2, parser.getLayers().get(i));
+        
         player.draw(g2);
         g2.dispose();
     }
