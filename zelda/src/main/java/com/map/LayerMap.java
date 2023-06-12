@@ -13,6 +13,24 @@ public class LayerMap {
 
     public LayerMap() {
     }
+
+    public static int[][] convertToTwoDimensional(int[] array, int rows, int columns) {
+        if (array.length != rows * columns) {
+            throw new IllegalArgumentException("Le nombre d'éléments du tableau ne correspond pas à la taille bidimensionnelle spécifiée.");
+        }
+
+        int[][] twoDimensionalArray = new int[rows][columns];
+        int index = 0;
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                twoDimensionalArray[j][i] = array[index++];
+            }
+        }
+
+        return twoDimensionalArray;
+    }
+
     // getters and setters
     public int[] getData() {return data;}
     public void setData(int[] data) {this.data = data;}
@@ -40,4 +58,8 @@ public class LayerMap {
 
     public float getOpacity() {return opacity;}
     public void setOpacity(float opacity) {this.opacity = opacity;}
+
+    public int[][] getMap(){
+        return convertToTwoDimensional(data, height, width);
+    }
 }

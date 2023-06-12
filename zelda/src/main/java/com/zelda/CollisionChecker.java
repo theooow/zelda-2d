@@ -1,6 +1,7 @@
 package com.zelda;
 
 import com.entity.Entity;
+import com.map.LayerMap;
 
 public class CollisionChecker {
     GamePanel gamePanel;
@@ -22,39 +23,44 @@ public class CollisionChecker {
 
         int tileNum1, tileNum2;
 
-        switch(entity.getDirection()){
-            case "up":
-                entityTopRow = (entityTopWorldY - entity.getSpeed()) / gamePanel.getTileSize();
-                tileNum1 = gamePanel.getTileManager().getMapTileNum(entityLeftCol, entityTopRow);
-                tileNum2 = gamePanel.getTileManager().getMapTileNum(entityRightCol, entityTopRow);
-                if(gamePanel.getTileManager().getTile().get(tileNum1).getIsSolid() || gamePanel.getTileManager().getTile().get(tileNum2).getIsSolid()){
-                    entity.setCollision(true);
+        for(LayerMap layer : gamePanel.getParser().getLayers()){
+            if(layer.getName().contains("collision")){
+                switch(entity.getDirection()){
+                    case "up":
+                        entityTopRow = (entityTopWorldY - entity.getSpeed()) / gamePanel.getTileSize();
+                        // Il faudra utiliser les layers pour checker les collisions a la place de la map qui est nulle maintenant
+                        tileNum1 = layer.getMap()[entityLeftCol][entityTopRow];
+                        tileNum2 = layer.getMap()[entityRightCol][entityTopRow];
+                        if(gamePanel.getTileManager().getTile().get(tileNum1).getIsSolid() || gamePanel.getTileManager().getTile().get(tileNum2).getIsSolid()){
+                            entity.setCollision(true);
+                        }
+                        break;
+                    case "down":
+                        entityBottomRow = (entityBottomWorldY + entity.getSpeed()) / gamePanel.getTileSize();
+                        tileNum1 = layer.getMap()[entityLeftCol][entityBottomRow];
+                        tileNum2 = layer.getMap()[entityRightCol][entityBottomRow];
+                        if(gamePanel.getTileManager().getTile().get(tileNum1).getIsSolid() || gamePanel.getTileManager().getTile().get(tileNum2).getIsSolid()){
+                            entity.setCollision(true);
+                        }
+                        break;
+                    case "left":
+                        entityLeftCol = (entityLeftWorldX - entity.getSpeed()) / gamePanel.getTileSize();
+                        tileNum1 = layer.getMap()[entityLeftCol][entityTopRow];
+                        tileNum2 = layer.getMap()[entityLeftCol][entityBottomRow];
+                        if(gamePanel.getTileManager().getTile().get(tileNum1).getIsSolid() || gamePanel.getTileManager().getTile().get(tileNum2).getIsSolid()){
+                            entity.setCollision(true);
+                        }
+                        break;
+                    case "right":
+                        entityRightCol = (entityRightWorldX + entity.getSpeed()) / gamePanel.getTileSize();
+                        tileNum1 = layer.getMap()[entityRightCol][entityBottomRow];
+                        tileNum2 = layer.getMap()[entityRightCol][entityTopRow];
+                        if(gamePanel.getTileManager().getTile().get(tileNum1).getIsSolid() || gamePanel.getTileManager().getTile().get(tileNum2).getIsSolid()){
+                            entity.setCollision(true);
+                        }
+                        break;
                 }
-                break;
-            case "down":
-                entityBottomRow = (entityBottomWorldY + entity.getSpeed()) / gamePanel.getTileSize();
-                tileNum1 = gamePanel.getTileManager().getMapTileNum(entityLeftCol, entityBottomRow);
-                tileNum2 = gamePanel.getTileManager().getMapTileNum(entityRightCol, entityBottomRow);
-                if(gamePanel.getTileManager().getTile().get(tileNum1).getIsSolid() || gamePanel.getTileManager().getTile().get(tileNum2).getIsSolid()){
-                    entity.setCollision(true);
-                }
-                break;
-            case "left":
-                entityLeftCol = (entityLeftWorldX - entity.getSpeed()) / gamePanel.getTileSize();
-                tileNum1 = gamePanel.getTileManager().getMapTileNum(entityLeftCol, entityTopRow);
-                tileNum2 = gamePanel.getTileManager().getMapTileNum(entityLeftCol, entityBottomRow);
-                if(gamePanel.getTileManager().getTile().get(tileNum1).getIsSolid() || gamePanel.getTileManager().getTile().get(tileNum2).getIsSolid()){
-                    entity.setCollision(true);
-                }
-                break;
-            case "right":
-                entityRightCol = (entityRightWorldX + entity.getSpeed()) / gamePanel.getTileSize();
-                tileNum1 = gamePanel.getTileManager().getMapTileNum(entityRightCol, entityBottomRow);
-                tileNum2 = gamePanel.getTileManager().getMapTileNum(entityRightCol, entityTopRow);
-                if(gamePanel.getTileManager().getTile().get(tileNum1).getIsSolid() || gamePanel.getTileManager().getTile().get(tileNum2).getIsSolid()){
-                    entity.setCollision(true);
-                }
-                break;
+            }
         }
     }
 }

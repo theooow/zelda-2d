@@ -20,7 +20,6 @@ public class TileManager {
     GamePanel gamePanel;
     ArrayList<Tile> tile;
     int mapTileNum[][];
-    TiledMapParser parser;
 
 
     public TileManager(GamePanel _gamePanel){
@@ -34,8 +33,6 @@ public class TileManager {
 
         // between [176 - 1039] // 864
         loadTiles("./zelda/src/main/java/res/tiles/Objects.png", true);
-
-        parser = new TiledMapParser("./zelda/src/main/java/res/maps/world01.json");
     }
 
     private void loadTiles(String filePath, boolean isSolid){
@@ -98,24 +95,6 @@ public class TileManager {
         return tileSheet;
     }
 
-    public static int[][] convertToTwoDimensional(int[] array, int rows, int columns) {
-        if (array.length != rows * columns) {
-            throw new IllegalArgumentException("Le nombre d'éléments du tableau ne correspond pas à la taille bidimensionnelle spécifiée.");
-        }
-
-        int[][] twoDimensionalArray = new int[rows][columns];
-        int index = 0;
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                twoDimensionalArray[j][i] = array[index++];
-            }
-        }
-
-        return twoDimensionalArray;
-    }
-
-
     public void draw(Graphics2D g2, LayerMap layer){
 
         int worldCol = 0;
@@ -123,7 +102,7 @@ public class TileManager {
         int tileSize = gamePanel.getTileSize();
         int[][] map;
         try {
-            map = convertToTwoDimensional(layer.getData(), layer.getHeight(), layer.getWidth());
+            map = layer.getMap();
 
             while(worldCol < gamePanel.getMaxWorldCol() && worldRow < gamePanel.getMaxWorldRow()){
                 int tileNum = map[worldCol][worldRow];
@@ -138,8 +117,6 @@ public class TileManager {
                 && worldY - tileSize < gamePanel.getPlayer().getWorldY() + gamePanel.getPlayer().getScreenY()){
                     if(tileNum > 0)
                         g2.drawImage(tile.get(tileNum-1).getImage(), screenX, screenY, tileSize, tileSize, null);
-                    else 
-                        g2.drawImage(tile.get(56).getImage(), screenX, screenY, tileSize, tileSize, null);
                 }
                 worldCol++;
 

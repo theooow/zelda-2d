@@ -111,4 +111,5 @@ public class GamePanel extends JPanel implements Runnable {
     public Player getPlayer() {return player;}
     public Thread getGameThread() {return gameThread;}
     public TileManager getTileManager() {return tileManager;}
+    public TiledMapParser getParser() {return parser;}
 }

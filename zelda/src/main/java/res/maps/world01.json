@@ -118,7 +118,7 @@
          "height":50,
          "id":2,
          "locked":true,
-         "name":"elements",
+         "name":"collision-elements",
          "opacity":1,
          "parallaxx":1,
          "parallaxy":1,
