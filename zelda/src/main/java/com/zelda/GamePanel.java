@@ -3,8 +3,9 @@ package com.zelda;
 import javax.swing.JPanel;
 
 import com.entity.player.Player;
-import com.entity.tiles.TileManager;
 import com.map.TiledMapParser;
+import com.object.SuperObject;
+import com.tile.TileManager;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -33,11 +34,15 @@ public class GamePanel extends JPanel implements Runnable {
 
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
-    TileManager tileManager = new TileManager(this);
+    TileManager tileManager;
     TiledMapParser parser;
 
-    public CollisionChecker collisionChecker = new CollisionChecker(this);
+    CollisionChecker collisionChecker = new CollisionChecker(this);
+    AssetSetter assetSetter = new AssetSetter(this);
     Player player = new Player(this, keyHandler);
+
+    // This mean that we have 10 slots in the game to put objects at the same time
+    SuperObject obj[] = new SuperObject[10];
 
     public GamePanel() {
         super();
@@ -46,7 +51,12 @@ public class GamePanel extends JPanel implements Runnable {
         setDoubleBuffered(true);
         addKeyListener(keyHandler);
         setFocusable(true);
-        parser = new TiledMapParser("./zelda/src/main/java/res/maps/world01.json");
+        parser = new TiledMapParser("./zelda/src/main/java/res/maps/world02.json");
+        tileManager = new TileManager(this);
+    }
+
+    public void init(){
+        assetSetter.setObject();
     }
 
     public void startGameThread() {
@@ -87,9 +97,16 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+        // Draw tiles
         for(int i = 0; i < parser.getLayers().size(); i++)
             tileManager.draw(g2, parser.getLayers().get(i));
-        
+
+        // Draw objects
+        for(SuperObject o : obj)
+            if(o != null)
+                o.draw(g2, this);
+
+        // Draw player
         player.draw(g2);
         g2.dispose();
     }
@@ -108,8 +125,11 @@ public class GamePanel extends JPanel implements Runnable {
     public int getWorldWidth() {return worldWidth;}
     public int getFPS() {return FPS;}
     public KeyHandler getKeyHandler() {return keyHandler;}
+    public CollisionChecker getCollisionChecker() {return collisionChecker;}
+    public AssetSetter getAssetSetter() {return assetSetter;}
     public Player getPlayer() {return player;}
     public Thread getGameThread() {return gameThread;}
     public TileManager getTileManager() {return tileManager;}
     public TiledMapParser getParser() {return parser;}
+    public SuperObject[] getObj() {return obj;}
 }

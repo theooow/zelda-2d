@@ -17,6 +17,7 @@ public class App
         frame.setVisible(true);
         frame.pack();
 
+        gamePanel.init();
         gamePanel.startGameThread();
 
     }

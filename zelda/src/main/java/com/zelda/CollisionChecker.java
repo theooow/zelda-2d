@@ -25,10 +25,10 @@ public class CollisionChecker {
 
         for(LayerMap layer : gamePanel.getParser().getLayers()){
             if(layer.getName().contains("collision")){
+
                 switch(entity.getDirection()){
                     case "up":
                         entityTopRow = (entityTopWorldY - entity.getSpeed()) / gamePanel.getTileSize();
-                        // Il faudra utiliser les layers pour checker les collisions a la place de la map qui est nulle maintenant
                         tileNum1 = layer.getMap()[entityLeftCol][entityTopRow];
                         tileNum2 = layer.getMap()[entityRightCol][entityTopRow];
                         if(gamePanel.getTileManager().getTile().get(tileNum1).getIsSolid() || gamePanel.getTileManager().getTile().get(tileNum2).getIsSolid()){
@@ -62,5 +62,10 @@ public class CollisionChecker {
                 }
             }
         }
+    }
+
+    public int checkObject(Entity entity, boolean player){
+        int index = 999;
+        return index;
     }
 }

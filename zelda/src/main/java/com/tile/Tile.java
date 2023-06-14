@@ -1,11 +1,11 @@
-package com.entity.tiles;
+package com.tile;
 
 import java.awt.image.BufferedImage;
 
 public class Tile {
         
     private BufferedImage image;
-    private boolean isSolid = false;
+    private boolean isSolid;
 
     public Tile(BufferedImage _image, boolean _isSolid){
         image = _image;

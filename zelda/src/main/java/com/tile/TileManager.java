@@ -1,38 +1,37 @@
-package com.entity.tiles;
+package com.tile;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
 import com.map.LayerMap;
-import com.map.TiledMapParser;
 import com.zelda.GamePanel;
 
 public class TileManager {
     
     GamePanel gamePanel;
     ArrayList<Tile> tile;
-    int mapTileNum[][];
-
 
     public TileManager(GamePanel _gamePanel){
         gamePanel = _gamePanel;
         tile = new ArrayList<>();
-        mapTileNum = new int[gamePanel.getMaxWorldCol()][gamePanel.getMaxWorldRow()];
-        //loadMap("/res/maps/world-01.txt");
 
         // between [0 - 175] // 176
         loadTiles("./zelda/src/main/java/res/tiles/Overworld.png", false);
 
         // between [176 - 1039] // 864
         loadTiles("./zelda/src/main/java/res/tiles/Objects.png", true);
+
+        for(LayerMap layer :_gamePanel.getParser().getLayers()){
+            if(layer.getName().contains("collision"))
+                for(int i = 0; i < layer.getData().length; i++)
+                    if(layer.getData()[i] != 0)
+                        tile.get(layer.getData()[i]).setIsSolid(true);
+        }
     }
 
     private void loadTiles(String filePath, boolean isSolid){
@@ -48,40 +47,9 @@ public class TileManager {
                 int y = i * tileSize;
                 int width = Math.min(tileSize, tileSheet.getWidth() - x);
                 int height = Math.min(tileSize, tileSheet.getHeight() - y);
-
+                
                 tile.add(new Tile(tileSheet.getSubimage(x, y, width, height), isSolid));
             }
-        }
-
-        // Here declare the tiles that are solid
-        
-    }
-
-    public void loadMap(String filePath){
-        try {
-            InputStream is = getClass().getResourceAsStream(filePath);
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-            int col = 0;
-            int row = 0;
-
-            while(col < gamePanel.getMaxWorldCol() && row < gamePanel.getMaxWorldRow()){
-                String line = br.readLine();
-                
-                while(col < gamePanel.getMaxWorldCol()){
-                    String[] tokens = line.split(" ");
-                    int num = Integer.parseInt(tokens[col]);
-                    mapTileNum[col][row] = num;
-                    col++;
-                }
-                if(col == gamePanel.getMaxWorldCol()){
-                    col = 0;
-                    row++;
-                }
-            }
-            br.close();
-        } catch (Exception e) {
-            e.getStackTrace();
         }
     }
 
@@ -133,9 +101,5 @@ public class TileManager {
 
     public ArrayList<Tile> getTile() {
         return tile;
-    }
-
-    public int getMapTileNum(int col, int row) {
-        return mapTileNum[col][row];
     }
 }
