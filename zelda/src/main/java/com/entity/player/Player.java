@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.entity.Entity;
+import com.object.OBJ_Chest;
 import com.zelda.GamePanel;
 import com.zelda.KeyHandler;
 
@@ -14,6 +15,7 @@ public class Player extends Entity{
     KeyHandler keyHandler;
 
     final int screenX, screenY;
+    int nbKeys;
 
     public Player(GamePanel _gamePanel, KeyHandler _keyHandler){
         gamePanel = _gamePanel;
@@ -21,6 +23,8 @@ public class Player extends Entity{
         screenX = gamePanel.getScreenWidth()/2 - gamePanel.getTileSize()/2;
         screenY = gamePanel.getScreenHeight()/2 - gamePanel.getTileSize()/2;
         hitBox = new Rectangle(16, 24, 16, 20);
+        hitBoxDefaultX = hitBox.x;
+        hitBoxDefaultY = hitBox.y;
         setDefaultValues();
         loadSprite();
     }
@@ -70,6 +74,8 @@ public class Player extends Entity{
             gamePanel.getCollisionChecker().checkTile(this);
 
             // Collision check with objects
+            int objIndex = gamePanel.getCollisionChecker().checkObject(this, true);
+            pickUpItem(objIndex);
 
             // Move player if no collision
             if(!collision){
@@ -99,6 +105,25 @@ public class Player extends Entity{
         }else{
             spriteNumber = 1;
             spriteCounter = 0;
+        }
+    }
+
+    public void pickUpItem(int objIndex){
+        if(objIndex != 999){
+            String objName = gamePanel.getObj(objIndex).getName();
+            switch(objName){
+                case "key":
+                    gamePanel.setObj(objIndex, null);
+                    nbKeys++;
+                    break;
+                case "chest":
+                    if(nbKeys > 0){
+                        OBJ_Chest o = (OBJ_Chest)gamePanel.getObj(objIndex);
+                        o.open();
+                        nbKeys--;
+                    }
+                    break;
+            }
         }
     }
 

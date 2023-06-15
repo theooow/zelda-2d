@@ -1,5 +1,6 @@
 package com.zelda;
 
+import com.object.OBJ_Chest;
 import com.object.OBJ_Key;
 
 public class AssetSetter {
@@ -12,7 +13,11 @@ public class AssetSetter {
 
     public void setObject(){
         gamePanel.getObj()[0] = new OBJ_Key();
-        gamePanel.getObj()[0].setWorldX(26*gamePanel.getTileSize());
+        gamePanel.getObj()[0].setWorldX(25*gamePanel.getTileSize());
         gamePanel.getObj()[0].setWorldY(12*gamePanel.getTileSize());
+
+        gamePanel.getObj()[1] = new OBJ_Chest();
+        gamePanel.getObj()[1].setWorldX(24*gamePanel.getTileSize());
+        gamePanel.getObj()[1].setWorldY(10*gamePanel.getTileSize());
     }
 }

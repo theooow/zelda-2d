@@ -2,6 +2,7 @@ package com.zelda;
 
 import com.entity.Entity;
 import com.map.LayerMap;
+import com.object.SuperObject;
 
 public class CollisionChecker {
     GamePanel gamePanel;
@@ -66,6 +67,66 @@ public class CollisionChecker {
 
     public int checkObject(Entity entity, boolean player){
         int index = 999;
+        int counter = 0;
+        for(SuperObject o : gamePanel.getObj()){
+            if(o != null){
+                //Get entity's hitbox position
+                entity.getHitBox().x = entity.getWorldX() + entity.getHitBox().x;
+                entity.getHitBox().y = entity.getWorldY() + entity.getHitBox().y;
+
+                //Get object's hitbox position
+                o.getHitBox().x = o.getWorldX() + o.getHitBox().x;
+                o.getHitBox().y = o.getWorldY() + o.getHitBox().y;
+
+                //Check collision
+                switch(entity.getDirection()){
+                    case "up":
+                        entity.getHitBox().y -= entity.getSpeed();
+                        if(entity.getHitBox().intersects(o.getHitBox())){
+                            if(o.getIsSolid())
+                                entity.setCollision(true);
+                            if(player)
+                                index = counter;
+                        }                      
+                        break;
+                    case "down":
+                        entity.getHitBox().y += entity.getSpeed();
+                        if(entity.getHitBox().intersects(o.getHitBox())){
+                            if(o.getIsSolid())
+                                entity.setCollision(true);
+                            if(player)
+                                index = counter;
+                        }                 
+                        break;
+                    case "left":
+                        entity.getHitBox().x -= entity.getSpeed();
+                        if(entity.getHitBox().intersects(o.getHitBox())){
+                            if(o.getIsSolid())
+                                entity.setCollision(true);
+                            if(player)
+                                index = counter;
+                        }                      
+                        break;
+                    case "right":
+                        entity.getHitBox().x += entity.getSpeed();
+                        if(entity.getHitBox().intersects(o.getHitBox())){
+                            if(o.getIsSolid())
+                                entity.setCollision(true);
+                            if(player)
+                                index = counter;
+                        }  
+                        break;
+                }
+                //Reset entity's hitbox position
+                entity.getHitBox().x = entity.getHitBoxDefaultX();
+                entity.getHitBox().y = entity.getHitBoxDefaultY();
+
+                //Reset object's hitbox position
+                o.getHitBox().x = o.getHitBoxDefaultX();
+                o.getHitBox().y = o.getHitBoxDefaultY();
+            }
+            counter++;
+        }
         return index;
     }
 }

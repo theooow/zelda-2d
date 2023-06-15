@@ -17,6 +17,11 @@ public class OBJ_Chest extends SuperObject {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        setIsSolid(true);
+    }
+
+    public void open(){
+        setImage(sheet.getSubimage(16, 0, 16, 16));
     }
 
 }

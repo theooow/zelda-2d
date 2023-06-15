@@ -132,4 +132,8 @@ public class GamePanel extends JPanel implements Runnable {
     public TileManager getTileManager() {return tileManager;}
     public TiledMapParser getParser() {return parser;}
     public SuperObject[] getObj() {return obj;}
+    public SuperObject getObj(int objIndex) {return obj[objIndex];}
+
+    // Setters
+    public void setObj(int index, SuperObject _obj) {obj[index] = _obj;}
 }

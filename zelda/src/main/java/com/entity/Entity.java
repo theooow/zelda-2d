@@ -19,6 +19,7 @@ public class Entity {
     protected int spriteNumber = 1;
 
     protected Rectangle hitBox;
+    protected int hitBoxDefaultX, hitBoxDefaultY;
     protected boolean collision = false;
 
     protected BufferedImage getSpriteSheet(){
@@ -26,8 +27,6 @@ public class Entity {
         try{
             spriteSheet = ImageIO.read(new File("./zelda/src/main/java/res/players/character.png"));
         }catch(IOException e){
-            //Afficher le chemin courant
-            System.err.println("Current path: " + System.getProperty("user.dir"));
             e.printStackTrace();
         }
         return spriteSheet;
@@ -41,6 +40,8 @@ public class Entity {
 
     public int getSpeed() {return speed;}
     public Rectangle getHitBox() {return hitBox;}
+    public int getHitBoxDefaultX() {return hitBoxDefaultX;}
+    public int getHitBoxDefaultY() {return hitBoxDefaultY;}
     public boolean getCollision() {return collision;}
     public void setCollision(boolean _collision) {collision = _collision;}
     public BufferedImage getSpriteUp1() {return spriteUp1;}
