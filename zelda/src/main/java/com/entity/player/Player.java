@@ -116,14 +116,22 @@ public class Player extends Entity{
                     gamePanel.setObj(objIndex, null);
                     gamePanel.playSE(1);
                     nbKeys++;
+                    gamePanel.getMyUI().showMessage("You found a key !");
                     break;
                 case "chest":
-                    if(nbKeys > 0){
-                        OBJ_Chest o = (OBJ_Chest)gamePanel.getObj(objIndex);
-                        o.open();
-                        gamePanel.playSE(3);
-                        nbKeys--;
-                    }
+                        if(gamePanel.getObj(objIndex) instanceof OBJ_Chest){
+                            OBJ_Chest o = (OBJ_Chest)gamePanel.getObj(objIndex);
+                            if(nbKeys > 0){
+                                if(direction == "up" || direction == "left" || direction == "right"){
+                                    o.open();   
+                                    gamePanel.playSE(3);
+                                    nbKeys--;
+                                }else
+                                    gamePanel.getMyUI().showMessage("You can't open the chest from the back !");
+                            }else
+                                if(!o.getState())
+                                    gamePanel.getMyUI().showMessage("You need a key !"); 
+                        }
                     break;
             }
         }
@@ -176,4 +184,5 @@ public class Player extends Entity{
     public int getScreenY(){ return screenY; }
     public int getSpeed(){ return speed; }
     public String getDirection(){ return direction; }
+    public int getNbKeys(){ return nbKeys; }
 }

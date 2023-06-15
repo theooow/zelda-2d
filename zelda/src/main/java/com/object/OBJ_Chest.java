@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 public class OBJ_Chest extends SuperObject {
     
     BufferedImage sheet;
+    boolean state = false;
 
     public OBJ_Chest(){
         setName("chest");
@@ -22,6 +23,11 @@ public class OBJ_Chest extends SuperObject {
 
     public void open(){
         setImage(sheet.getSubimage(16, 0, 16, 16));
+        state = true;
+    }
+
+    public boolean getState(){
+        return state;
     }
 
 }

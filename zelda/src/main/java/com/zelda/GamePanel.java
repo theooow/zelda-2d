@@ -31,13 +31,16 @@ public class GamePanel extends JPanel implements Runnable {
     final int FPS = 60;
 
     KeyHandler keyHandler = new KeyHandler();
-    Sound sound = new Sound();
+    Sound music = new Sound();
+    Sound SE = new Sound();
 
     TileManager tileManager;
     TiledMapParser parser;
 
     CollisionChecker collisionChecker = new CollisionChecker(this);
     AssetSetter assetSetter = new AssetSetter(this); 
+
+    UI ui = new UI(this);
     Thread gameThread;
 
     Player player = new Player(this, keyHandler);
@@ -57,7 +60,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void init(){
         assetSetter.setObject();
-        playSound(0);
+        playMusic(0);
     }
 
     public void startGameThread() {
@@ -109,22 +112,26 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Draw player
         player.draw(g2);
+
+        // Draw UI
+        ui.draw(g2);
+
         g2.dispose();
     }
 
-    public void playSound(int i){
-        sound.setFile(i);
-        sound.play();
-        sound.loop();
+    public void playMusic(int i){
+        music.setFile(i);
+        music.play();
+        music.loop();
     }
 
-    public void stopSound(){
-        sound.stop();
+    public void stopMusic(){
+        music.stop();
     }
 
     public void playSE(int i){
-        sound.setFile(i);
-        sound.play();
+        SE.setFile(i);
+        SE.play();
     }
 
     // Getters
@@ -139,10 +146,12 @@ public class GamePanel extends JPanel implements Runnable {
     public int getMaxWorldRow() {return maxWorldRow;}
     public int getFPS() {return FPS;}
     public KeyHandler getKeyHandler() {return keyHandler;}
-    public Sound getSound() {return sound;}
+    public Sound getMusic() {return music;}
+    public Sound getSE() {return SE;}
     public CollisionChecker getCollisionChecker() {return collisionChecker;}
     public AssetSetter getAssetSetter() {return assetSetter;}
     public Player getPlayer() {return player;}
+    public UI getMyUI() {return ui;}
     public Thread getGameThread() {return gameThread;}
     public TileManager getTileManager() {return tileManager;}
     public TiledMapParser getParser() {return parser;}
