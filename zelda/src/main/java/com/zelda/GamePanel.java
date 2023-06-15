@@ -27,20 +27,20 @@ public class GamePanel extends JPanel implements Runnable {
     //World settings
     final int maxWorldCol = 50;
     final int maxWorldRow = 50;
-    final int worldHeight = tileSize * maxWorldRow; //1600 pixels
-    final int worldWidth = tileSize * maxWorldCol; //1920 pixels
 
     final int FPS = 60;
 
     KeyHandler keyHandler = new KeyHandler();
-    Thread gameThread;
+    Sound sound = new Sound();
+
     TileManager tileManager;
     TiledMapParser parser;
 
     CollisionChecker collisionChecker = new CollisionChecker(this);
-    AssetSetter assetSetter = new AssetSetter(this);
-    Player player = new Player(this, keyHandler);
+    AssetSetter assetSetter = new AssetSetter(this); 
+    Thread gameThread;
 
+    Player player = new Player(this, keyHandler);
     // This mean that we have 10 slots in the game to put objects at the same time
     SuperObject obj[] = new SuperObject[10];
 
@@ -57,6 +57,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void init(){
         assetSetter.setObject();
+        playSound(0);
     }
 
     public void startGameThread() {
@@ -111,6 +112,21 @@ public class GamePanel extends JPanel implements Runnable {
         g2.dispose();
     }
 
+    public void playSound(int i){
+        sound.setFile(i);
+        sound.play();
+        sound.loop();
+    }
+
+    public void stopSound(){
+        sound.stop();
+    }
+
+    public void playSE(int i){
+        sound.setFile(i);
+        sound.play();
+    }
+
     // Getters
     public int getTileSize() {return tileSize;}
     public int getScreenWidth() {return screenWidth;}
@@ -121,10 +137,9 @@ public class GamePanel extends JPanel implements Runnable {
     public int getOriginalTileSize() {return originalTileSize;}
     public int getMaxWorldCol() {return maxWorldCol;}
     public int getMaxWorldRow() {return maxWorldRow;}
-    public int getWorldHeight() {return worldHeight;}
-    public int getWorldWidth() {return worldWidth;}
     public int getFPS() {return FPS;}
     public KeyHandler getKeyHandler() {return keyHandler;}
+    public Sound getSound() {return sound;}
     public CollisionChecker getCollisionChecker() {return collisionChecker;}
     public AssetSetter getAssetSetter() {return assetSetter;}
     public Player getPlayer() {return player;}

@@ -114,12 +114,14 @@ public class Player extends Entity{
             switch(objName){
                 case "key":
                     gamePanel.setObj(objIndex, null);
+                    gamePanel.playSE(1);
                     nbKeys++;
                     break;
                 case "chest":
                     if(nbKeys > 0){
                         OBJ_Chest o = (OBJ_Chest)gamePanel.getObj(objIndex);
                         o.open();
+                        gamePanel.playSE(3);
                         nbKeys--;
                     }
                     break;
