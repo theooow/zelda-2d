@@ -25,7 +25,7 @@ public class UI {
     public UI(GamePanel _gamePanel){
         gamePanel = _gamePanel;
         font = new Font("Arial", Font.BOLD, 42);
-        OBJ_Key key = new OBJ_Key();
+        OBJ_Key key = new OBJ_Key(_gamePanel);
         keyImage = key.getImage();
     }
 

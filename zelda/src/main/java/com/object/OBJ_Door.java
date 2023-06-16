@@ -14,7 +14,7 @@ public class OBJ_Door extends SuperObject {
         try {
             sheet = ImageIO.read(getClass().getResourceAsStream("/res/objects/door.png"));
             setImage(sheet.getSubimage(0, 0, 16, 16));
-        } catch (IOException e) {
+            setImage(uTool.scaledImage(getImage(), getImage().getWidth() * 3, getImage().getHeight() * 3) );        } catch (IOException e) {
             e.printStackTrace();
         }
     }

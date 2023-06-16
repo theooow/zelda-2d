@@ -101,6 +101,9 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+        // Debug
+        long drawStart = System.nanoTime();
+
         // Draw tiles
         for(int i = 0; i < parser.getLayers().size(); i++)
             tileManager.draw(g2, parser.getLayers().get(i));
@@ -115,6 +118,10 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Draw UI
         ui.draw(g2);
+
+        long drawEnd = System.nanoTime();
+        long drawTime = drawEnd - drawStart;
+        System.out.println("Draw time: " + drawTime / 1000000 + "ms");
 
         g2.dispose();
     }

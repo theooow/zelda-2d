@@ -7,6 +7,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.zelda.GamePanel;
+import com.zelda.UtilityTool;
+
 public class Entity {
     
     protected int worldX, worldY;

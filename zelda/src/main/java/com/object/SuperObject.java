@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.zelda.GamePanel;
+import com.zelda.UtilityTool;
 
 public class SuperObject {
     
@@ -15,6 +16,7 @@ public class SuperObject {
     private Rectangle hitBox = new Rectangle(0,0,48,48);
     private int hitBoxDefaultX = hitBox.x;
     private int hitBoxDefaultY = hitBox.y;
+    UtilityTool uTool = new UtilityTool();
 
     public void draw(Graphics2D g2, GamePanel gamePanel){
         int screenX = worldX - gamePanel.getPlayer().getWorldX() + gamePanel.getPlayer().getScreenX();
@@ -24,7 +26,7 @@ public class SuperObject {
         && worldX - gamePanel.getTileSize() < gamePanel.getPlayer().getWorldX() + gamePanel.getPlayer().getScreenX()
         && worldY + gamePanel.getTileSize() > gamePanel.getPlayer().getWorldY() - gamePanel.getPlayer().getScreenY()
         && worldY - gamePanel.getTileSize() < gamePanel.getPlayer().getWorldY() + gamePanel.getPlayer().getScreenY())
-            g2.drawImage(image, screenX, screenY, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
+            g2.drawImage(image, screenX, screenY, null);
     }
 
     // geters

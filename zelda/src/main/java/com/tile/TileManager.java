@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 
 import com.map.LayerMap;
 import com.zelda.GamePanel;
+import com.zelda.UtilityTool;
 
 public class TileManager {
     
@@ -37,7 +38,7 @@ public class TileManager {
     private void loadTiles(String filePath, boolean isSolid){
         BufferedImage tileSheet = getSheet(filePath);
 
-        int tileSize = gamePanel.getOriginalTileSize();
+        int tileSize = gamePanel.getTileSize();
         int numRows = tileSheet.getHeight() / tileSize;
         int numCols = tileSheet.getWidth() / tileSize;
 
@@ -57,6 +58,13 @@ public class TileManager {
         BufferedImage tileSheet = null;
         try{
             tileSheet = ImageIO.read(new File(filePath));
+            int scaledWidth = tileSheet.getWidth() * gamePanel.getScale();
+            int scaledHeight = tileSheet.getHeight() * gamePanel.getScale();
+
+            UtilityTool uTool = new UtilityTool();
+            BufferedImage scaledImage = uTool.scaledImage(tileSheet, scaledWidth, scaledHeight);
+            tileSheet = scaledImage;
+            
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -84,7 +92,7 @@ public class TileManager {
                 && worldY + tileSize > gamePanel.getPlayer().getWorldY() - gamePanel.getPlayer().getScreenY()
                 && worldY - tileSize < gamePanel.getPlayer().getWorldY() + gamePanel.getPlayer().getScreenY()){
                     if(tileNum > 0)
-                        g2.drawImage(tile.get(tileNum-1).getImage(), screenX, screenY, tileSize, tileSize, null);
+                        g2.drawImage(tile.get(tileNum-1).getImage(), screenX, screenY, null);
                 }
                 worldCol++;
 

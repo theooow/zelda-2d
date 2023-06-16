@@ -8,6 +8,7 @@ import com.entity.Entity;
 import com.object.OBJ_Chest;
 import com.zelda.GamePanel;
 import com.zelda.KeyHandler;
+import com.zelda.UtilityTool;
 
 public class Player extends Entity{
     
@@ -16,6 +17,7 @@ public class Player extends Entity{
 
     final int screenX, screenY;
     int nbKeys;
+    int standCounter = 0;
 
     public Player(GamePanel _gamePanel, KeyHandler _keyHandler){
         gamePanel = _gamePanel;
@@ -37,20 +39,24 @@ public class Player extends Entity{
     }
 
     public void loadSprite(){
-        BufferedImage spriteSheet = getSpriteSheet();
-        int spriteSize = gamePanel.getOriginalTileSize();
+        UtilityTool uTool = new UtilityTool();
+        
+        int scaledWidth = getSpriteSheet().getWidth() * gamePanel.getScale();
+        int scaledHeight = getSpriteSheet().getHeight() * gamePanel.getScale();
+        BufferedImage spriteSheet = uTool.scaledImage(getSpriteSheet(), scaledWidth, scaledHeight);
+        int spriteSize = gamePanel.getTileSize();
         spriteDown2 = spriteSheet.getSubimage(0, 0, spriteSize, spriteSize);
-        spriteDown1 = spriteSheet.getSubimage(16, 0, spriteSize, spriteSize);
-        spriteDown3 = spriteSheet.getSubimage(32, 0, spriteSize, spriteSize);
-        spriteLeft2 = spriteSheet.getSubimage(0, 16, spriteSize, spriteSize);
-        spriteLeft1 = spriteSheet.getSubimage(16, 16, spriteSize, spriteSize);
-        spriteLeft3 = spriteSheet.getSubimage(32, 16, spriteSize, spriteSize);
-        spriteRight2 = spriteSheet.getSubimage(0, 32, spriteSize, spriteSize);
-        spriteRight1 = spriteSheet.getSubimage(16, 32, spriteSize, spriteSize);
-        spriteRight3 = spriteSheet.getSubimage(32, 32, spriteSize, spriteSize);
-        spriteUp2 = spriteSheet.getSubimage(0, 48, spriteSize, spriteSize);
-        spriteUp1 = spriteSheet.getSubimage(16, 48, spriteSize, spriteSize);
-        spriteUp3 = spriteSheet.getSubimage(32, 48, spriteSize, spriteSize);
+        spriteDown1 = spriteSheet.getSubimage(16*3, 0, spriteSize, spriteSize);
+        spriteDown3 = spriteSheet.getSubimage(32*3, 0, spriteSize, spriteSize);
+        spriteLeft2 = spriteSheet.getSubimage(0, 16*3, spriteSize, spriteSize);
+        spriteLeft1 = spriteSheet.getSubimage(16*3, 16*3, spriteSize, spriteSize);
+        spriteLeft3 = spriteSheet.getSubimage(32*3, 16*3, spriteSize, spriteSize);
+        spriteRight2 = spriteSheet.getSubimage(0, 32*3, spriteSize, spriteSize);
+        spriteRight1 = spriteSheet.getSubimage(16*3, 32*3, spriteSize, spriteSize);
+        spriteRight3 = spriteSheet.getSubimage(32*3, 32*3, spriteSize, spriteSize);
+        spriteUp2 = spriteSheet.getSubimage(0, 48*3, spriteSize, spriteSize);
+        spriteUp1 = spriteSheet.getSubimage(16*3, 48*3, spriteSize, spriteSize);
+        spriteUp3 = spriteSheet.getSubimage(32*3, 48*3, spriteSize, spriteSize);
     }
 
     public void update(){
@@ -103,7 +109,11 @@ public class Player extends Entity{
                 else if (spriteNumber < 1) spriteNumber = 3;
             }
         }else{
-            spriteNumber = 1;
+            standCounter++;
+            if(standCounter > 20){
+                spriteNumber = 1;
+                standCounter = 0;
+            }
             spriteCounter = 0;
         }
     }
@@ -174,7 +184,7 @@ public class Player extends Entity{
                     sprite = spriteRight3;
                 break;
         }
-        g2.drawImage(sprite, screenX, screenY, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
+        g2.drawImage(sprite, screenX, screenY, null);
     }
 
     // Getters
