@@ -30,7 +30,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     final int FPS = 60;
 
-    KeyHandler keyHandler = new KeyHandler();
+    KeyHandler keyHandler = new KeyHandler(this);
     Sound music = new Sound();
     Sound SE = new Sound();
 
@@ -47,6 +47,11 @@ public class GamePanel extends JPanel implements Runnable {
     // This mean that we have 10 slots in the game to put objects at the same time
     SuperObject obj[] = new SuperObject[10];
 
+    // Game states
+    public int gameState;
+    public final int PLAY_STATE = 1;
+    public final int PAUSE_STATE = 2;
+
     public GamePanel() {
         super();
         setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -61,6 +66,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void init(){
         assetSetter.setObject();
         playMusic(0);
+        gameState = PLAY_STATE;
     }
 
     public void startGameThread() {
@@ -95,7 +101,10 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        player.update();
+        if(gameState == PLAY_STATE)
+            player.update();
+        if(gameState == PAUSE_STATE);
+            // Nothing
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);

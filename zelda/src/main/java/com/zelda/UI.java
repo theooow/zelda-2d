@@ -37,20 +37,29 @@ public class UI {
     public void draw(Graphics2D g2){
         g2.setFont(font);
         g2.setColor(Color.WHITE);
-        g2.drawImage(keyImage, 10, 10, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
-        g2.drawString("x" + gamePanel.getPlayer().getNbKeys(), 60, 50);
 
-        timer += (double)1/60;
-        g2.drawString("Time: " + df.format(timer), gamePanel.getTileSize()*11, 50);
+        if(gamePanel.gameState == gamePanel.PAUSE_STATE){
+            int lenght = (int)g2.getFontMetrics().getStringBounds("PAUSE", g2).getWidth();
+            int x = (gamePanel.getWidth() - lenght)/2;
+            int y = gamePanel.getScreenHeight()/2;
+            g2.drawString("PAUSE", x, y);
+        }else{
 
-        if(messageOnScreen){
-            g2.setFont(font.deriveFont(30F));
-            g2.drawString(message, gamePanel.getTileSize()/2, gamePanel.getTileSize()*5);
-            messageTimer++;
+            g2.drawImage(keyImage, 10, 10, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
+            g2.drawString("x" + gamePanel.getPlayer().getNbKeys(), 60, 50);
 
-            if(messageTimer > 120){
-                messageOnScreen = false;
-                messageTimer = 0;
+            timer += (double)1/60;
+            g2.drawString("Time: " + df.format(timer), gamePanel.getTileSize()*11, 50);
+
+            if(messageOnScreen){
+                g2.setFont(font.deriveFont(30F));
+                g2.drawString(message, gamePanel.getTileSize()/2, gamePanel.getTileSize()*5);
+                messageTimer++;
+
+                if(messageTimer > 120){
+                    messageOnScreen = false;
+                    messageTimer = 0;
+                }
             }
         }
     }
