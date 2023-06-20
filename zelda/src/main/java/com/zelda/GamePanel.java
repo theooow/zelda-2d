@@ -2,6 +2,7 @@ package com.zelda;
 
 import javax.swing.JPanel;
 
+import com.entity.Entity;
 import com.entity.player.Player;
 import com.map.TiledMapParser;
 import com.object.SuperObject;
@@ -44,8 +45,8 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
 
     Player player = new Player(this, keyHandler);
-    // This mean that we have 10 slots in the game to put objects at the same time
-    SuperObject obj[] = new SuperObject[10];
+    SuperObject obj[] = new SuperObject[10]; // This mean that we have 10 slots in the game to put objects at the same time
+    Entity npc[] = new Entity[10]; // Same as above but for NPCs
 
     // Game states
     public int gameState;
@@ -65,6 +66,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void init(){
         assetSetter.setObject();
+        assetSetter.setNPC();
         playMusic(0);
         gameState = PLAY_STATE;
     }
@@ -101,9 +103,14 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        if(gameState == PLAY_STATE)
+        if(gameState == PLAY_STATE){
+            //Player update
             player.update();
-        if(gameState == PAUSE_STATE);
+            //NPC update
+            for(Entity n : npc)
+                if(n != null)
+                    n.update();
+        }else if(gameState == PAUSE_STATE);
             // Nothing
     }
     public void paintComponent(Graphics g) {
@@ -121,6 +128,11 @@ public class GamePanel extends JPanel implements Runnable {
         for(SuperObject o : obj)
             if(o != null)
                 o.draw(g2, this);
+        
+        // Draw NPCs
+        for(Entity n : npc)
+            if(n != null)
+                n.draw(g2);
 
         // Draw player
         player.draw(g2);
@@ -173,7 +185,10 @@ public class GamePanel extends JPanel implements Runnable {
     public TiledMapParser getParser() {return parser;}
     public SuperObject[] getObj() {return obj;}
     public SuperObject getObj(int objIndex) {return obj[objIndex];}
+    public Entity[] getNpc() {return npc;}
+    public Entity getNpc(int npcIndex) {return npc[npcIndex];}
 
     // Setters
     public void setObj(int index, SuperObject _obj) {obj[index] = _obj;}
+    public void setNpc(int index, Entity _npc) {npc[index] = _npc;}
 }

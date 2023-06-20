@@ -1,26 +1,21 @@
 package com.entity.player;
 
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 
 import com.entity.Entity;
 import com.object.OBJ_Chest;
 import com.zelda.GamePanel;
 import com.zelda.KeyHandler;
-import com.zelda.UtilityTool;
 
 public class Player extends Entity{
     
-    GamePanel gamePanel;
     KeyHandler keyHandler;
 
     final int screenX, screenY;
     int nbKeys;
-    int standCounter = 0;
 
     public Player(GamePanel _gamePanel, KeyHandler _keyHandler){
-        gamePanel = _gamePanel;
+        super(_gamePanel);
         keyHandler = _keyHandler;
         screenX = gamePanel.getScreenWidth()/2 - gamePanel.getTileSize()/2;
         screenY = gamePanel.getScreenHeight()/2 - gamePanel.getTileSize()/2;
@@ -28,7 +23,7 @@ public class Player extends Entity{
         hitBoxDefaultX = hitBox.x;
         hitBoxDefaultY = hitBox.y;
         setDefaultValues();
-        loadSprite();
+        loadSprite("./zelda/src/main/java/res/players/char.png");
     }
 
     private void setDefaultValues(){
@@ -36,27 +31,6 @@ public class Player extends Entity{
         worldY = gamePanel.getTileSize()*25;
         speed = 4;
         direction = "down";
-    }
-
-    public void loadSprite(){
-        UtilityTool uTool = new UtilityTool();
-        
-        int scaledWidth = getSpriteSheet().getWidth() * gamePanel.getScale();
-        int scaledHeight = getSpriteSheet().getHeight() * gamePanel.getScale();
-        BufferedImage spriteSheet = uTool.scaledImage(getSpriteSheet(), scaledWidth, scaledHeight);
-        int spriteSize = gamePanel.getTileSize();
-        spriteDown2 = spriteSheet.getSubimage(0, 0, spriteSize, spriteSize);
-        spriteDown1 = spriteSheet.getSubimage(16*3, 0, spriteSize, spriteSize);
-        spriteDown3 = spriteSheet.getSubimage(32*3, 0, spriteSize, spriteSize);
-        spriteLeft2 = spriteSheet.getSubimage(0, 16*3, spriteSize, spriteSize);
-        spriteLeft1 = spriteSheet.getSubimage(16*3, 16*3, spriteSize, spriteSize);
-        spriteLeft3 = spriteSheet.getSubimage(32*3, 16*3, spriteSize, spriteSize);
-        spriteRight2 = spriteSheet.getSubimage(0, 32*3, spriteSize, spriteSize);
-        spriteRight1 = spriteSheet.getSubimage(16*3, 32*3, spriteSize, spriteSize);
-        spriteRight3 = spriteSheet.getSubimage(32*3, 32*3, spriteSize, spriteSize);
-        spriteUp2 = spriteSheet.getSubimage(0, 48*3, spriteSize, spriteSize);
-        spriteUp1 = spriteSheet.getSubimage(16*3, 48*3, spriteSize, spriteSize);
-        spriteUp3 = spriteSheet.getSubimage(32*3, 48*3, spriteSize, spriteSize);
     }
 
     public void update(){
@@ -83,21 +57,17 @@ public class Player extends Entity{
             int objIndex = gamePanel.getCollisionChecker().checkObject(this, true);
             pickUpItem(objIndex);
 
+            // Collision check with NPCs
+            int npcIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getNpc());
+            interactNPC(npcIndex);
+
             // Move player if no collision
             if(!collision){
                 switch(direction){
-                    case "up":
-                        worldY -= speed;
-                        break;
-                    case "down":
-                        worldY += speed;
-                        break;
-                    case "left":
-                        worldX -= speed;
-                        break;
-                    case "right":
-                        worldX += speed;
-                        break;
+                    case "up": worldY -= speed; break;
+                    case "down": worldY += speed; break;
+                    case "left": worldX -= speed; break;
+                    case "right": worldX += speed; break;
                 }
             }
 
@@ -147,44 +117,10 @@ public class Player extends Entity{
         }
     }
 
-    public void draw(Graphics2D g2){
-        BufferedImage sprite = null;
-
-        switch(direction){
-            case "up":
-                if(spriteNumber == 1)
-                    sprite = spriteUp1;
-                else if(spriteNumber == 2)
-                    sprite = spriteUp2;
-                else if(spriteNumber == 3)
-                    sprite = spriteUp3;
-                break;
-            case "down":
-                if(spriteNumber == 1)
-                    sprite = spriteDown1;
-                else if(spriteNumber == 2)
-                    sprite = spriteDown2;
-                else if(spriteNumber == 3)
-                    sprite = spriteDown3;
-                break;
-            case "left":
-                if(spriteNumber == 1)
-                    sprite = spriteLeft1;
-                else if(spriteNumber == 2)
-                    sprite = spriteLeft2;
-                else if(spriteNumber == 3)
-                    sprite = spriteLeft3;
-                break;
-            case "right":
-                if(spriteNumber == 1)
-                    sprite = spriteRight1;
-                else if(spriteNumber == 2)
-                    sprite = spriteRight2;
-                else if(spriteNumber == 3)
-                    sprite = spriteRight3;
-                break;
+    public void interactNPC(int i){
+        if(i != 999){
+            System.out.println("Hiting NPC");
         }
-        g2.drawImage(sprite, screenX, screenY, null);
     }
 
     // Getters
