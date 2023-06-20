@@ -50,6 +50,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Game states
     public int gameState;
+    public final int TITLE_STATE = 0;
     public final int PLAY_STATE = 1;
     public final int PAUSE_STATE = 2;
     public final int DIALOG_STATE = 3;
@@ -68,8 +69,8 @@ public class GamePanel extends JPanel implements Runnable {
     public void init(){
         assetSetter.setObject();
         assetSetter.setNPC();
-        playMusic(0);
-        gameState = PLAY_STATE;
+        //playMusic(0);
+        gameState = TITLE_STATE;
     }
 
     public void startGameThread() {
@@ -121,30 +122,34 @@ public class GamePanel extends JPanel implements Runnable {
         // Debug
         //long drawStart = System.nanoTime();
 
-        // Draw tiles
-        for(int i = 0; i < parser.getLayers().size(); i++)
-            tileManager.draw(g2, parser.getLayers().get(i));
+        // Title screen
+        if(gameState == TITLE_STATE){
+            ui.draw(g2);
+        }else{ // Draw game
+             // Draw tiles
+            for(int i = 0; i < parser.getLayers().size(); i++)
+                tileManager.draw(g2, parser.getLayers().get(i));
 
-        // Draw objects
-        for(SuperObject o : obj)
-            if(o != null)
-                o.draw(g2, this);
-        
-        // Draw NPCs
-        for(Entity n : npc)
-            if(n != null)
-                n.draw(g2);
+            // Draw objects
+            for(SuperObject o : obj)
+                if(o != null)
+                    o.draw(g2, this);
+            
+            // Draw NPCs
+            for(Entity n : npc)
+                if(n != null)
+                    n.draw(g2);
 
-        // Draw player
-        player.draw(g2);
+            // Draw player
+            player.draw(g2);
 
-        // Draw UI
-        ui.draw(g2);
+            // Draw UI
+            ui.draw(g2);
 
-        //long drawEnd = System.nanoTime();
-        //long drawTime = drawEnd - drawStart;
-        //System.out.println("Draw time: " + drawTime / 1000000 + "ms");
-
+            //long drawEnd = System.nanoTime();
+            //long drawTime = drawEnd - drawStart;
+            //System.out.println("Draw time: " + drawTime / 1000000 + "ms");
+        }
         g2.dispose();
     }
 

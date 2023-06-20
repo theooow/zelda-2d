@@ -24,6 +24,7 @@ public class UI {
     int messageTimer = 0;
 
     String currentDialog = "";
+    int commandNum = 0;
 
     public UI(GamePanel _gamePanel){
         gamePanel = _gamePanel;
@@ -49,37 +50,85 @@ public class UI {
         g2.setFont(maruMonica);
         g2.setColor(Color.WHITE);
 
-        if(gamePanel.gameState == gamePanel.PAUSE_STATE){
+        if(gamePanel.gameState == gamePanel.TITLE_STATE)
+            drawTitleScreen();
+        else if(gamePanel.gameState == gamePanel.PAUSE_STATE)
             drawPauseScreen();
-        }else if(gamePanel.gameState == gamePanel.DIALOG_STATE){
+        else if(gamePanel.gameState == gamePanel.DIALOG_STATE)
             drawDialogScreen();
-        }else if(gamePanel.gameState == gamePanel.PLAY_STATE){
+        else if(gamePanel.gameState == gamePanel.PLAY_STATE)
+            drawUI();
+        
+    }
 
-            g2.drawImage(keyImage, 10, 10, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 50F));
-            g2.drawString("x" + gamePanel.getPlayer().getNbKeys(), 60, 55);
+    private void drawTitleScreen() {
+        //Background
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0, 0, gamePanel.getScreenWidth(), gamePanel.getScreenHeight());
+        //Title
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 76F));
+        String text = "Like The Legend Of Zelda";
+        int x = getXforCenteredText(text);
+        int y = gamePanel.getTileSize()*4;
+            //Shadow
+            g2.setColor(Color.GRAY);
+            g2.drawString(text, x-2, y+8);
+            //Text
+            g2.setColor(Color.WHITE);
+            g2.drawString(text, x, y);
+        //Image
+        BufferedImage i = gamePanel.getPlayer().getSpriteDown1();
+        x = gamePanel.getScreenWidth()/2 - gamePanel.getTileSize();
+        y += gamePanel.getTileSize();
+        g2.drawImage(i, x, y, gamePanel.getTileSize()*2, gamePanel.getTileSize()*2, null);
 
-            if(messageOnScreen){
-                g2.setFont(g2.getFont().deriveFont(30F));
-                g2.drawString(message, gamePanel.getTileSize()/2, gamePanel.getTileSize()*5);
-                messageTimer++;
+        //Menu
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 42F));
+        text = "NEW GAME";
+        x = getXforCenteredText(text);
+        y += gamePanel.getTileSize()*4;
+        g2.drawString(text, x, y);
+        if(commandNum==0)
+            g2.drawString(">", x-gamePanel.getTileSize(), y);
+        
+        text = "LOAD GAME";
+        x = getXforCenteredText(text);
+        y += gamePanel.getTileSize();
+        g2.drawString(text, x, y);
+        if(commandNum==1)
+            g2.drawString(">", x-gamePanel.getTileSize(), y);
+        
+        text = "LEAVE";
+        x = getXforCenteredText(text);
+        y += gamePanel.getTileSize();
+        g2.drawString(text, x, y);
+        if(commandNum==2)
+            g2.drawString(">", x-gamePanel.getTileSize(), y);
+        
+    }
 
-                if(messageTimer > 120){
-                    messageOnScreen = false;
-                    messageTimer = 0;
-                }
+    private void drawUI() {
+        g2.drawImage(keyImage, 10, 10, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 50F));
+        g2.drawString("x" + gamePanel.getPlayer().getNbKeys(), 60, 55);
+
+        if(messageOnScreen){
+            g2.setFont(g2.getFont().deriveFont(30F));
+            g2.drawString(message, gamePanel.getTileSize()/2, gamePanel.getTileSize()*5);
+            messageTimer++;
+
+            if(messageTimer > 120){
+                messageOnScreen = false;
+                messageTimer = 0;
             }
         }
     }
-
     private void drawPauseScreen() {
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 90F));
-        int lenght = (int)g2.getFontMetrics().getStringBounds("PAUSE", g2).getWidth();
-        int x = (gamePanel.getWidth() - lenght)/2;
+        int x = getXforCenteredText("PAUSE");
         int y = gamePanel.getScreenHeight()/2;
         g2.drawString("PAUSE", x, y);
     }
-
     private void drawDialogScreen(){
         //Window
         int x = gamePanel.getTileSize();
@@ -108,5 +157,11 @@ public class UI {
         g2.drawRoundRect(x+5, y+5, width-10, height-10, 25, 25);
     }
 
+    private int getXforCenteredText(String text){
+        int lenght = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        return gamePanel.screenWidth/2 - lenght/2;
+    }
+
+    // Setters
     public void setCurrentDialog(String s){currentDialog = s;}
 }
