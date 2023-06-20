@@ -27,7 +27,6 @@ public class CollisionChecker {
 
         for(LayerMap layer : gamePanel.getParser().getLayers()){
             if(layer.getName().contains("collision")){
-
                 switch(entity.getDirection()){
                     case "up":
                         entityTopRow = (entityTopWorldY - entity.getSpeed()) / gamePanel.getTileSize();

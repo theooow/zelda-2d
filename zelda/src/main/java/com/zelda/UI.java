@@ -9,7 +9,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.object.OBJ_Heart;
 import com.object.OBJ_Key;
+import com.object.SuperObject;
 
 public class UI {
     
@@ -18,6 +20,7 @@ public class UI {
     Font maruMonica;
 
     BufferedImage keyImage;
+    BufferedImage heart_full, heart_half, heart_blank;
 
     boolean messageOnScreen = false;
     String message = "";
@@ -36,8 +39,15 @@ public class UI {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        OBJ_Key key = new OBJ_Key(_gamePanel);
+        OBJ_Key key = new OBJ_Key(gamePanel);
         keyImage = key.getImage();
+
+        OBJ_Heart heart = new OBJ_Heart(_gamePanel);
+        heart_full = heart.getImage();
+        heart.setHalf();
+        heart_half = heart.getImage();
+        heart.setEmpty();
+        heart_blank = heart.getImage();
     }
 
     public void showMessage(String _message){
@@ -52,13 +62,44 @@ public class UI {
 
         if(gamePanel.gameState == gamePanel.TITLE_STATE)
             drawTitleScreen();
-        else if(gamePanel.gameState == gamePanel.PAUSE_STATE)
+        else if(gamePanel.gameState == gamePanel.PAUSE_STATE){
+            drawPlayerLife();
             drawPauseScreen();
-        else if(gamePanel.gameState == gamePanel.DIALOG_STATE)
+        }
+        else if(gamePanel.gameState == gamePanel.DIALOG_STATE){
+            drawPlayerLife();
             drawDialogScreen();
-        else if(gamePanel.gameState == gamePanel.PLAY_STATE)
+        }
+        else if(gamePanel.gameState == gamePanel.PLAY_STATE){
+            drawPlayerLife();
             drawUI();
+        }
         
+    }
+
+    private void drawPlayerLife() {
+        int x = gamePanel.getTileSize()/2;
+        int y = gamePanel.getTileSize()/2;
+        int i = 0;
+
+        while(i < gamePanel.getPlayer().getMaxLife()/2){
+            g2.drawImage(heart_blank, x, y, null);
+            i++;
+            x+= gamePanel.getTileSize();
+        }
+
+        x = gamePanel.getTileSize()/2;
+        y = gamePanel.getTileSize()/2;
+        i = 0;
+
+        while(i < gamePanel.getPlayer().getLife()){
+            g2.drawImage(heart_half, x, y, null);
+            i++;
+            if(i < gamePanel.getPlayer().getLife())
+                g2.drawImage(heart_full, x, y, null);
+            i++;
+            x += gamePanel.getTileSize();
+        }
     }
 
     private void drawTitleScreen() {
@@ -108,9 +149,9 @@ public class UI {
     }
 
     private void drawUI() {
-        g2.drawImage(keyImage, 10, 10, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
+        g2.drawImage(keyImage, gamePanel.getScreenWidth()-gamePanel.getTileSize()*2, 10, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 50F));
-        g2.drawString("x" + gamePanel.getPlayer().getNbKeys(), 60, 55);
+        g2.drawString("x" + gamePanel.getPlayer().getNbKeys(), gamePanel.getScreenWidth()-gamePanel.getTileSize(), 55);
 
         if(messageOnScreen){
             g2.setFont(g2.getFont().deriveFont(30F));

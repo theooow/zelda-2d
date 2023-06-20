@@ -133,7 +133,7 @@ public class GamePanel extends JPanel implements Runnable {
             // Draw objects
             for(SuperObject o : obj)
                 if(o != null)
-                    o.draw(g2, this);
+                    o.draw(g2);
             
             // Draw NPCs
             for(Entity n : npc)

@@ -33,6 +33,9 @@ public class Entity {
     protected String dialogs[] = new String[20];
     protected int dialogIndex = 0;
 
+    protected int maxLife;
+    protected int life;
+
     public Entity(GamePanel gp){
         gamePanel = gp;
     }

@@ -31,6 +31,10 @@ public class Player extends Entity{
         worldY = gamePanel.getTileSize()*25;
         speed = 4;
         direction = "down";
+
+        // player status
+        maxLife = 6;
+        life = maxLife;
     }
 
     public void update(){
@@ -135,4 +139,11 @@ public class Player extends Entity{
     public int getSpeed(){ return speed; }
     public String getDirection(){ return direction; }
     public int getNbKeys(){ return nbKeys; }
+
+    public int getMaxLife() {
+        return maxLife;
+    }
+    public int getLife(){
+        return life;
+    }
 }
