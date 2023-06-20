@@ -119,8 +119,12 @@ public class Player extends Entity{
 
     public void interactNPC(int i){
         if(i != 999){
-            System.out.println("Hiting NPC");
+            if(gamePanel.getKeyHandler().spacePressed){
+                gamePanel.gameState = gamePanel.DIALOG_STATE;
+                gamePanel.getNpc(i).speak();
+            }
         }
+        gamePanel.getKeyHandler().spacePressed = false;
     }
 
     // Getters

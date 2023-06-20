@@ -13,6 +13,15 @@ public class NPC_1 extends Entity {
         speed = 1;
         
         loadSprite("./zelda/src/main/java/res/npcs/npc1.png");
+        setDialog();
+    }
+
+    public void setDialog(){
+        dialogs[0] = "Where was you ?!";
+        dialogs[1] = "We've looked for you \neverywhere !";
+        dialogs[2] = "...";
+        dialogs[3] = "You don't remember ??";
+        dialogs[4] = "Well, everyone is waiting for \nyou at the castle. Go on !";
     }
 
     public void setAction(){
@@ -30,6 +39,10 @@ public class NPC_1 extends Entity {
                 direction = "right";
             actionLockCounter = 0;
         }
+    }
+
+    public void speak(){
+        super.speak();
     }
 
 }

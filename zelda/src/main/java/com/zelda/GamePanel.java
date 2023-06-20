@@ -52,6 +52,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int gameState;
     public final int PLAY_STATE = 1;
     public final int PAUSE_STATE = 2;
+    public final int DIALOG_STATE = 3;
 
     public GamePanel() {
         super();
@@ -118,7 +119,7 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
 
         // Debug
-        long drawStart = System.nanoTime();
+        //long drawStart = System.nanoTime();
 
         // Draw tiles
         for(int i = 0; i < parser.getLayers().size(); i++)
@@ -140,9 +141,9 @@ public class GamePanel extends JPanel implements Runnable {
         // Draw UI
         ui.draw(g2);
 
-        long drawEnd = System.nanoTime();
-        long drawTime = drawEnd - drawStart;
-        System.out.println("Draw time: " + drawTime / 1000000 + "ms");
+        //long drawEnd = System.nanoTime();
+        //long drawTime = drawEnd - drawStart;
+        //System.out.println("Draw time: " + drawTime / 1000000 + "ms");
 
         g2.dispose();
     }
