@@ -42,6 +42,9 @@ public class GamePanel extends JPanel implements Runnable {
     AssetSetter assetSetter = new AssetSetter(this); 
 
     UI ui = new UI(this);
+
+    EventHandler eHandler = new EventHandler(this);
+
     Thread gameThread;
 
     Player player = new Player(this, keyHandler);
@@ -186,6 +189,7 @@ public class GamePanel extends JPanel implements Runnable {
     public AssetSetter getAssetSetter() {return assetSetter;}
     public Player getPlayer() {return player;}
     public UI getMyUI() {return ui;}
+    public EventHandler getEventHandler() {return eHandler;}
     public Thread getGameThread() {return gameThread;}
     public TileManager getTileManager() {return tileManager;}
     public TiledMapParser getParser() {return parser;}

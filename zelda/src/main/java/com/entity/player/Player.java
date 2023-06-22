@@ -19,7 +19,7 @@ public class Player extends Entity{
         keyHandler = _keyHandler;
         screenX = gamePanel.getScreenWidth()/2 - gamePanel.getTileSize()/2;
         screenY = gamePanel.getScreenHeight()/2 - gamePanel.getTileSize()/2;
-        hitBox = new Rectangle(16, 24, 16, 20);
+        hitBox = new Rectangle(16, 20, 16, 28);
         hitBoxDefaultX = hitBox.x;
         hitBoxDefaultY = hitBox.y;
         setDefaultValues();
@@ -64,6 +64,12 @@ public class Player extends Entity{
             // Collision check with NPCs
             int npcIndex = gamePanel.getCollisionChecker().checkEntity(this, gamePanel.getNpc());
             interactNPC(npcIndex);
+
+            // Check event
+            gamePanel.getEventHandler().checkEvent();
+
+            gamePanel.getKeyHandler().spacePressed = false;
+
 
             // Move player if no collision
             if(!collision){
@@ -128,7 +134,6 @@ public class Player extends Entity{
                 gamePanel.getNpc(i).speak();
             }
         }
-        gamePanel.getKeyHandler().spacePressed = false;
     }
 
     // Getters
@@ -145,5 +150,12 @@ public class Player extends Entity{
     }
     public int getLife(){
         return life;
+    }
+
+    public int getHitBoxDefaultX(){ return hitBoxDefaultX;}
+    public int getHitBoxDefaultY(){ return hitBoxDefaultY;}
+
+    public void setLife(int i) {
+        life += i;
     }
 }

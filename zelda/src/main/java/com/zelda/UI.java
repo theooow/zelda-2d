@@ -11,8 +11,6 @@ import java.io.InputStream;
 
 import com.object.OBJ_Heart;
 import com.object.OBJ_Key;
-import com.object.SuperObject;
-
 public class UI {
     
     GamePanel gamePanel;
