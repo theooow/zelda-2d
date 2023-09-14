@@ -11,7 +11,7 @@ public class Player extends Entity{
     
     KeyHandler keyHandler;
 
-    final int screenX, screenY;
+    int screenX, screenY;
     int nbKeys;
 
     public Player(GamePanel _gamePanel, KeyHandler _keyHandler){
@@ -27,8 +27,10 @@ public class Player extends Entity{
     }
 
     private void setDefaultValues(){
+        //spawnlocation
         worldX = gamePanel.getTileSize()*25;
         worldY = gamePanel.getTileSize()*25;
+
         speed = 4;
         direction = "down";
 
@@ -38,6 +40,9 @@ public class Player extends Entity{
     }
 
     public void update(){
+
+        
+        
 
         if(keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed){
 
@@ -69,6 +74,10 @@ public class Player extends Entity{
             gamePanel.getEventHandler().checkEvent();
 
             gamePanel.getKeyHandler().spacePressed = false;
+
+
+            
+            //System.out.println("2/ " + gamePanel.getScreenWidth() + " " + gamePanel.getScreenHeight());
 
 
             // Move player if no collision
@@ -155,7 +164,11 @@ public class Player extends Entity{
     public int getHitBoxDefaultX(){ return hitBoxDefaultX;}
     public int getHitBoxDefaultY(){ return hitBoxDefaultY;}
 
+
+    // Setters
     public void setLife(int i) {
         life += i;
     }
+    public void setScreenX(int _screenX){ screenX = _screenX; }
+    public void setScreenY(int _screenY){ screenY = _screenY; }
 }

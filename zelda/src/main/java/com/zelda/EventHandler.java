@@ -27,7 +27,7 @@ public class EventHandler {
 
     private void damagePit(int gameState) {
         gp.gameState = gameState;
-        gp.getMyUI().currentDialog = "You tooked some damages";
+        gp.getMyUI().currentDialog = "You tooked some damages"; // permet d'afficher un txt dans le dialog
         gp.player.setLife(-1);
     }
 

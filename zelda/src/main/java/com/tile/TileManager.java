@@ -35,12 +35,13 @@ public class TileManager {
         }
     }
 
+    //chope les tiles du fichier //!NE SERT PAS A LES AFFICHER
     private void loadTiles(String filePath, boolean isSolid){
         BufferedImage tileSheet = getSheet(filePath);
 
         int tileSize = gamePanel.getTileSize();
         int numRows = tileSheet.getHeight() / tileSize;
-        int numCols = tileSheet.getWidth() / tileSize;
+        int numCols = tileSheet.getWidth() / tileSize; 
 
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
@@ -86,6 +87,8 @@ public class TileManager {
                 int worldY = worldRow * tileSize;
                 int screenX = worldX - gamePanel.getPlayer().getWorldX() + gamePanel.getPlayer().getScreenX();
                 int screenY = worldY - gamePanel.getPlayer().getWorldY() + gamePanel.getPlayer().getScreenY();
+                //System.out.println("screenX: " + screenX + " screenY: " + screenY);
+                
 
                 if(worldX + tileSize > gamePanel.getPlayer().getWorldX() - gamePanel.getPlayer().getScreenX()
                 && worldX - tileSize < gamePanel.getPlayer().getWorldX() + gamePanel.getPlayer().getScreenX()
@@ -109,5 +112,16 @@ public class TileManager {
 
     public ArrayList<Tile> getTile() {
         return tile;
+    }
+
+    public void update() 
+    {
+        int _screenX = gamePanel.getScreenWidth()/2 - gamePanel.getTileSize()/2;
+        int _screenY = gamePanel.getScreenHeight()/2 - gamePanel.getTileSize()/2;
+
+        // update screenX and screenY
+        gamePanel.getPlayer().setScreenX(_screenX);
+        gamePanel.getPlayer().setScreenY(_screenY);
+
     }
 }
