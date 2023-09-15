@@ -180,6 +180,7 @@ public class KeyHandler implements KeyListener {
                     //saving method
                 }
                 else if(gp.getMyUI().commandNum == 1){
+                    gp.getMyUI().commandNum = 0;
                     gp.gameState = gp.OPTION_STATE;
                 }
                 else if(gp.getMyUI().commandNum == 2){
