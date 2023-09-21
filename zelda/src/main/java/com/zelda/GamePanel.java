@@ -20,10 +20,16 @@ public class GamePanel extends JPanel implements Runnable {
 
     final int tileSize = originalTileSize * scale;
 
-    final int maxScreencol = 16;
-    final int maxScreenrow = 12;
-    final int screenWidth = tileSize * maxScreencol; //768 pixels
-    final int screenHeight = tileSize * maxScreenrow; //576 pixels
+
+    //! PERMET DE MODIFIER LA RESOLUTION DE L'ECRAN
+    //* 40x22 tiles -> 1920x1056 pixels (near 1920x1080)
+    //* 16x12 tiles -> 768x576 pixels (near 800x600)
+
+    
+    int maxScreencol = 16;
+    int maxScreenrow = 12;
+    int screenWidth = tileSize * maxScreencol; //768 pixels
+    int screenHeight = tileSize * maxScreenrow; //576 pixels
 
     //World settings
     final int maxWorldCol = 50;
@@ -57,6 +63,9 @@ public class GamePanel extends JPanel implements Runnable {
     public final int PLAY_STATE = 1;
     public final int PAUSE_STATE = 2;
     public final int DIALOG_STATE = 3;
+    public final int OPTION_STATE = 4; // modify this line
+    public final int OPTIONVIDEO_STATE = 5; // modify this line
+
 
     public GamePanel() {
         super();
@@ -111,6 +120,8 @@ public class GamePanel extends JPanel implements Runnable {
         if(gameState == PLAY_STATE){
             //Player update
             player.update();
+            //Option update (update the resolution of the screen)
+            tileManager.update();
             //NPC update
             for(Entity n : npc)
                 if(n != null)
@@ -201,4 +212,14 @@ public class GamePanel extends JPanel implements Runnable {
     // Setters
     public void setObj(int index, SuperObject _obj) {obj[index] = _obj;}
     public void setNpc(int index, Entity _npc) {npc[index] = _npc;}
+    public void setScreenSize(int _screenWidth, int _screenHeight) {
+        screenHeight = _screenHeight;
+        screenWidth = _screenWidth;
+        
+    }
+    public void setMaxScreen(int _maxScreencol, int _maxScreenrow) {
+        maxScreencol = _maxScreencol;
+        maxScreenrow = _maxScreenrow;
+        //setScreenSize(_maxScreencol*tileSize, _maxScreenrow*tileSize);
+    }
 }

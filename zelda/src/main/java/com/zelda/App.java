@@ -12,12 +12,13 @@ public class App
         GamePanel gamePanel = new GamePanel();
         frame.add(gamePanel);
 
-        frame.setResizable(false);
+        frame.setResizable(true);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.pack();
 
         gamePanel.init();
+        
         gamePanel.startGameThread();
 
     }
